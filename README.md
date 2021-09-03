@@ -1,1 +1,109 @@
 # Insurance-CSV-Processor
+Welcome to my solution for the At-Home Data Engineering assignment! I hope the results are satisfactory and I look forward to hearing from you soon. 
+I also wanted to thank you for the opportunity to join the team. Please let me know if you have any questions or concerns about the code.
+## How to run
+Simply update input directory on line 8 to the directory where the csv files are located:
+
+`
+input_dir = r'./inputs'
+`
+
+Then, edit the output directory / file to your desired output directory.
+
+`
+output_file = "outputs/output.csv"
+`
+
+## Explanation of Solution
+### Thought Process
+I decided to use dicts for processing all data, the reason behind this the importance of key value pairs 
+and the consideration that input csvs may have differently ordered headers (and may even have extra columns not 
+required for output).
+
+I initially started by creating a list that would eventually contain every line from the csvs read that had correct data.
+
+`
+output_data = []
+`
+
+I then looped through all csvs in the input folder.
+
+`
+for filename in os.listdir(input_dir):
+`
+
+For each file I converted the data within them to dictionaries (using csv.DictReader) and processed each row.
+
+`
+reader = csv.DictReader(open(input_dir + '/' + filename, 'r'))
+`
+
+I also made sure to keep track of row number for error reporting purposes.
+
+`
+row_number = 1
+`
+
+### Error reporting / handling
+For all rows I kept track if an error shows up during parsing with a Boolean 'error'.  
+I also made sure to continuously keep track of row number, incrementing it at every row
+
+`
+row_number += 1
+`
+
+First, I checked if the row contained a NULL (blank data) in any column that is non-nullable.
+
+For each offense, I printed the offending row number and column name (and set error to True).
+
+When parsing ends, if error is set to True, the code will stop parsing and continue to the next record.
+
+```
+non_null = ['Provider Name', 'CampaignID', 'Cost Per Ad Click', 'Redirect Link', 'Address', 'Zipcode']
+            # Set initial state of error to false
+            error = False
+            for key in non_null:
+                if row[key] == '':
+                    # For any error found print the offending row number and column name and then continue to the next row
+                    print(f"Error: {filename} Row {row_number} does not contain {key}")
+                    # If an error is found, set error to true
+                    error = True
+            # If there was an error found continue to the next row
+            if error:
+                continue
+```
+
+### Valid data processing
+If the row had no offenses (correct data types and no blanks in non-nullable columns) 
+I added that row's data to a new dictionary containing only the required columns (as keys).
+I then appended that new dictionary to the list I had created initially to store the output data
+
+```
+output_row = {'Provider Name': row['Provider Name'],
+                          'CampaignID': row['CampaignID'],
+                          'Cost Per Ad Click': row['Cost Per Ad Click'],
+                          'Redirect Link': row['Redirect Link'],
+                          'Phone Number': row['Phone Number'],
+                          'Address': row['Address'],
+                          'Zipcode': row['Zipcode']}
+output_data.append(output_row)
+```
+
+
+Once all csvs were processed I exported the data to an output csv, this time using csv.DictWriter.
+
+```
+    with open(output_file, 'w') as output:
+        writer = csv.DictWriter(output, delimiter=',', lineterminator='\n', fieldnames=output_columns)
+        writer.writeheader()
+        for data in output_data:
+            writer.writerow(data)
+```
+
+
+## Expansion Ideas
+These are some ideas I've thought of for expanding this project and potentially improving it:
+* Processing errors to a separate csv instead of to the console
+    * including data such as offending file name, offending columns, row numbers
+    * possibly can be used to gather statistics on different providers and improve process permanently
+* Allow input directory and output csv + directory to be arguments (kept them as variables for simplicity purposes and testing)
