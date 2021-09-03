@@ -73,6 +73,27 @@ non_null = ['Provider Name', 'CampaignID', 'Cost Per Ad Click', 'Redirect Link',
                 continue
 ```
 
+#### Cost Per Ad Click (special check)
+A special check is made for Cost Per Ad Click, which needs to be of type float.
+So the first thing in processing is to attempt to remove all non-float related characters from Cost Per Ad Click.
+This will allow data such as "15.0" to be converted to 15.0 for exporting.
+
+`
+row['Cost Per Ad Click'] = re.sub("[^0-9^.]", "", row['Cost Per Ad Click'])
+`
+
+Next, the code will try to convert the Cost Per Ad Click to a float. If this fails, we know that even after removing 
+extra characters such as quotes, the Cost Per Ad Click is still not a valid float. 
+In case a failure an error is printed and the error variable is set to true.
+
+```
+            try:
+                row['Cost Per Ad Click'] = float(row['Cost Per Ad Click'])
+            except ValueError:
+                print(f"Error: {filename} Row {row_number} contains a non-float Cost Per Ad Click")
+                error = True
+```
+
 ### Valid data processing
 If the row had no offenses (correct data types and no blanks in non-nullable columns) 
 I added that row's data to a new dictionary containing only the required columns (as keys).

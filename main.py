@@ -1,5 +1,6 @@
 import os
 import csv
+import re
 
 if __name__ == '__main__':
     # Resultant list of dicts that will contain valid rows
@@ -21,10 +22,18 @@ if __name__ == '__main__':
             error = False
             for key in non_null:
                 if row[key] == '':
-                    # For any error found print the offending row number and column name and then continue to the next row
+                    # For any error found print the offending row number and column name and set error to True
                     print(f"Error: {filename} Row {row_number} does not contain {key}")
                     # If an error is found, set error to true
                     error = True
+            # Remove all non-float related characters from Cost Per Ad Click
+            row['Cost Per Ad Click'] = re.sub("[^0-9^.]", "", row['Cost Per Ad Click'])
+            # Try to convert Cost Per Ad Click to a float, if the value is not a valid float, report the error and set error to True
+            try:
+                row['Cost Per Ad Click'] = float(row['Cost Per Ad Click'])
+            except ValueError:
+                print(f"Error: {filename} Row {row_number} contains a non-float Cost Per Ad Click")
+                error = True
             # If there was an error found continue to the next row
             if error:
                 continue
