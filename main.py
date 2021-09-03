@@ -3,7 +3,8 @@ import csv
 import re
 import sys
 
-if __name__ == '__main__':
+
+def csv_processor():
     # Resultant list of dicts that will contain valid rows
     output_data = []
     # This is the directory containing all csv files to be processed, feel free to change it!
@@ -11,8 +12,6 @@ if __name__ == '__main__':
     if not os.path.isdir(input_dir):
         print('Specified input directory does not exist!')
         sys.exit()
-    # Create the input directory if it does not exist
-    os.makedirs(input_dir, exist_ok=True)
     # Loop through all files in our inputs directory
     for filename in os.listdir(input_dir):
         # Open the file at: input directory / filename
@@ -66,3 +65,8 @@ if __name__ == '__main__':
         writer.writeheader()
         for data in output_data:
             writer.writerow(data)
+    return output_data
+
+
+if __name__ == '__main__':
+    csv_processor()

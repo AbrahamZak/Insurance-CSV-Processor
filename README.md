@@ -2,13 +2,13 @@
 Welcome to my solution for the At-Home Data Engineering assignment! I hope the results are satisfactory and I look forward to hearing from you soon. 
 I also wanted to thank you for the opportunity to join the team. Please let me know if you have any questions or concerns about the code.
 ## How to run
-Simply update input directory on line 10 to the directory where the csv files are located (if not a valid directory an error will be printed and the script will terminate).
+Simply update input directory on line 11 to the directory where the csv files are located (if not a valid directory an error will be printed and the script will terminate).
 
 `
 input_dir = r'./inputs'
 `
 
-Then, edit the output directory on line 56 to your desired output directory (if not a valid directory it will default to the location of the script).
+Then, edit the output directory on line 55 to your desired output directory (if not a valid directory it will default to the location of the script).
 
 `
 output_dir = 'outputs'
@@ -98,7 +98,7 @@ In case a failure an error is printed and the error variable is set to true.
 ### Valid data processing
 If the row had no offenses (correct data types and no blanks in non-nullable columns) 
 I added that row's data to a new dictionary containing only the required columns (as keys).
-I then appended that new dictionary to the list I had created initially to store the output data
+I then appended that new dictionary to the list I had created initially to store the output data.
 
 ```
 output_row = {'Provider Name': row['Provider Name'],
@@ -122,6 +122,11 @@ Once all csvs were processed I exported the data to an output csv, this time usi
             writer.writerow(data)
 ```
 
+The function closes by returning the output data list
+
+`
+return output_data
+`
 
 ## Expansion Ideas
 These are some ideas I've thought of for expanding this project and potentially improving it:
@@ -130,3 +135,9 @@ These are some ideas I've thought of for expanding this project and potentially 
     * possibly can be used to gather statistics on different providers and improve process permanently
 * Allow input directory and output csv + directory to be arguments (kept them as variables for simplicity purposes and testing)
 * Scan folder for only specified file types (csv, excel sheets, comma separate texts files, etc.) and ignore all other files
+
+
+## Testing
+A small unit test is included (unittest.py).
+
+The unit test will run the script and compare the results to an already established correct output file (test_output/output.csv).
