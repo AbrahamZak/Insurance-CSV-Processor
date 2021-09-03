@@ -1,12 +1,18 @@
 import os
 import csv
 import re
+import sys
 
 if __name__ == '__main__':
     # Resultant list of dicts that will contain valid rows
     output_data = []
     # This is the directory containing all csv files to be processed, feel free to change it!
     input_dir = r'./inputs'
+    if not os.path.isdir(input_dir):
+        print('Specified input directory does not exist!')
+        sys.exit()
+    # Create the input directory if it does not exist
+    os.makedirs(input_dir, exist_ok=True)
     # Loop through all files in our inputs directory
     for filename in os.listdir(input_dir):
         # Open the file at: input directory / filename
@@ -47,7 +53,11 @@ if __name__ == '__main__':
                           'Zipcode': row['Zipcode']}
             output_data.append(output_row)
     # This is the directory / filename for the output csv, feel free to change it!
-    output_file = "outputs/output.csv"
+    output_dir = 'outputs'
+    if not os.path.isdir(output_dir):
+        print('Specified output directory does not exist! Outputting to script directory.')
+        output_dir = '.'
+    output_file = f"{output_dir}/output.csv"
     # Columns for output csv
     output_columns = ['Provider Name', 'CampaignID', 'Cost Per Ad Click', 'Redirect Link', 'Phone Number', 'Address', 'Zipcode']
     # Write everything from output list to the output csv

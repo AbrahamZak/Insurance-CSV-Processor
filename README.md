@@ -2,17 +2,18 @@
 Welcome to my solution for the At-Home Data Engineering assignment! I hope the results are satisfactory and I look forward to hearing from you soon. 
 I also wanted to thank you for the opportunity to join the team. Please let me know if you have any questions or concerns about the code.
 ## How to run
-Simply update input directory on line 8 to the directory where the csv files are located:
+Simply update input directory on line 10 to the directory where the csv files are located (if not a valid directory an error will be printed and the script will terminate).
 
 `
 input_dir = r'./inputs'
 `
 
-Then, edit the output directory / file to your desired output directory.
+Then, edit the output directory on line 56 to your desired output directory (if not a valid directory it will default to the location of the script).
 
 `
-output_file = "outputs/output.csv"
+output_dir = 'outputs'
 `
+
 
 ## Explanation of Solution
 ### Thought Process
@@ -128,3 +129,4 @@ These are some ideas I've thought of for expanding this project and potentially 
     * including data such as offending file name, offending columns, row numbers
     * possibly can be used to gather statistics on different providers and improve process permanently
 * Allow input directory and output csv + directory to be arguments (kept them as variables for simplicity purposes and testing)
+* Scan folder for only specified file types (csv, excel sheets, comma separate texts files, etc.) and ignore all other files
