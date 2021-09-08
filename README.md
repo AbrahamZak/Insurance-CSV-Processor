@@ -96,9 +96,9 @@ In case a failure an error is printed and the error variable is set to true.
 ```
 
 ### Valid data processing
+
 If the row had no offenses (correct data types and no blanks in non-nullable columns) 
 I added that row's data to a new dictionary containing only the required columns (as keys).
-I then appended that new dictionary to the list I had created initially to store the output data.
 
 ```
 output_row = {'Provider Name': row['Provider Name'],
@@ -108,9 +108,23 @@ output_row = {'Provider Name': row['Provider Name'],
                           'Phone Number': row['Phone Number'],
                           'Address': row['Address'],
                           'Zipcode': row['Zipcode']}
-output_data.append(output_row)
 ```
 
+#### Blanks in Phone Number
+Since Phone Number is the only nullable field, any phone number
+which is blank has its value changed to 'NULL'. This will aid in clarity with reviewing data
+as well as make a transition to a SQL database easier.
+
+```
+            if output_row['Phone Number'] == '':
+                output_row['Phone Number'] = 'NULL'
+```
+
+Finally, I appended that new dictionary to the list I had created initially to store the output data.
+
+`
+output_data.append(output_row)
+`
 
 Once all csvs were processed I exported the data to an output csv, this time using csv.DictWriter.
 

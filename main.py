@@ -50,6 +50,9 @@ def csv_processor():
                           'Phone Number': row['Phone Number'],
                           'Address': row['Address'],
                           'Zipcode': row['Zipcode']}
+            # If the output phone number is blank, replace it with NULL
+            if output_row['Phone Number'] == '':
+                output_row['Phone Number'] = 'NULL'
             output_data.append(output_row)
     # This is the directory / filename for the output csv, feel free to change it!
     output_dir = 'outputs'
